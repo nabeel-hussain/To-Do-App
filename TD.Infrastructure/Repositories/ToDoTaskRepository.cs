@@ -14,9 +14,10 @@ internal sealed class ToDoTaskRepository : IToDoTaskRepository
     public async Task AddAsync(ToDoTask toDoTask)
     {
         await _toDoDbContext.ToDoTasks.AddAsync(toDoTask);
+        await _toDoDbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<ToDoTask>> GetAllToDoTasks(Guid id)
+    public async Task<IEnumerable<ToDoTask>> GetAllToDoTasksAsync()
     {
         return await _toDoDbContext.ToDoTasks.ToListAsync();
     }
@@ -26,8 +27,10 @@ internal sealed class ToDoTaskRepository : IToDoTaskRepository
         return await _toDoDbContext.ToDoTasks.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void Update(ToDoTask toDoTask)
+    public async Task UpdateAsync(ToDoTask toDoTask)
     {
          _toDoDbContext.Update(toDoTask);
+        await _toDoDbContext.SaveChangesAsync();
+
     }
 }

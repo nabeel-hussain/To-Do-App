@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ToDoTasks\Commands\DeleteToDoTask\" />
-    <Folder Include="ToDoTasks\Commands\MarkAsDoneToDoTask\" />
-    <Folder Include="ToDoTasks\Commands\UpdateToDoTask\" />
-    <Folder Include="ToDoTasks\Queries\GetToDoTaskById\" />
-    <Folder Include="ToDoTasks\Queries\GetToDoTaskList\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.7.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
     <PackageReference Include="MediatR" Version="12.1.1" />

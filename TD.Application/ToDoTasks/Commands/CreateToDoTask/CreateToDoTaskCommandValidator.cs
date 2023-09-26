@@ -1,5 +1,12 @@
-﻿namespace TD.Application.ToDoTasks.Commands.CreateToDoTask;
+﻿using FluentValidation;
+using TD.Domain.Constants;
 
-internal class CreateToDoTaskCommandValidator
+namespace TD.Application.ToDoTasks.Commands.CreateToDoTask;
+
+public class CreateToDoTaskCommandValidator: AbstractValidator<CreateToDoTaskCommand>
 {
+    public CreateToDoTaskCommandValidator()
+    {
+        RuleFor(x => x.Title).NotEmpty().MinimumLength(ValidationConstants.MinimumToDoTaskTitleLength);
+    }
 }
