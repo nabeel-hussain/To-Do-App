@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TD.Domain.Repositories;
+using TD.Infrastructure.Repositories;
 
 namespace TD.Infrastructure
 {
@@ -14,6 +15,7 @@ namespace TD.Infrastructure
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            services.AddScoped<IToDoTaskRepository, ToDoTaskRepository>();
             return services;
         }
         public static IServiceCollection AddDbConext(this IServiceCollection services,IConfiguration configuration)

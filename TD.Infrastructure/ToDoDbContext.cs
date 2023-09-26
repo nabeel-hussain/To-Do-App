@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TD.Domain.Entities;
 
 namespace TD.Infrastructure;
 
 public sealed class ToDoDbContext : DbContext
 {
+    public DbSet<ToDoTask> ToDoTasks { get; set; }
+
     public ToDoDbContext(DbContextOptions options) : base(options)
     {
 
