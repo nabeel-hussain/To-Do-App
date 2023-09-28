@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using TD.Domain.Constants;
 using TD.Domain.Exceptions.CustomExceptions;
 using TD.Domain.Repositories;
@@ -9,10 +10,12 @@ namespace TD.Application.ToDoTasks.Commands.UpdateToDoTask;
 public sealed class UpdateToDoTaskCommandHandler : IRequestHandler<UpdateToDoTaskCommand, SlimToDoTask>
 {
     private readonly IToDoTaskRepository _toDoTaskRepository;
+    private readonly IMapper _mapper;
 
-    public UpdateToDoTaskCommandHandler(IToDoTaskRepository toDoTaskRepository)
+    public UpdateToDoTaskCommandHandler(IToDoTaskRepository toDoTaskRepository, IMapper mapper)
     {
         _toDoTaskRepository = toDoTaskRepository;
+        _mapper = mapper;
     }
 
     public async Task<SlimToDoTask> Handle(UpdateToDoTaskCommand request, CancellationToken cancellationToken)
@@ -23,8 +26,16 @@ public sealed class UpdateToDoTaskCommandHandler : IRequestHandler<UpdateToDoTas
             throw new ToDoTaskNotFoundException(message: ValidationMessages.ToDoTaskNotFound);
         }
         toDoTask.Update(title: request.Title,description: request.Description,dueDate: request.DueDate);
+        if(request.isDone==true)
+        {
+            toDoTask.MarkAsDone();
+        }
+        else
+        {
+            toDoTask.MarkAsUnDone();
+        }
         await _toDoTaskRepository.UpdateAsync(toDoTask);
-        var response = new SlimToDoTask(toDoTask.Id,toDoTask.Title,toDoTask.Description, toDoTask.IsDone,toDoTask.DueDate);
+        var response = _mapper.Map<SlimToDoTask>(toDoTask);
         return response;
     }
 }

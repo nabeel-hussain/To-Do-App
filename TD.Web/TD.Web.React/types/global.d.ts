@@ -1,6 +1,7 @@
 interface ToDoTask{
     title: string;
     id: string;
-    isDone: Boolean;
-    dueDate?: Date
+    isDone: boolean;
+    dueDate?: Date;
+    creationDate: Date;
 }

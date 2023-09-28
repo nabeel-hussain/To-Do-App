@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon, MDBTooltip } from 'mdb-react-ui-kit';
 import ReactDatePicker from 'react-datepicker';
-const AddTask: React.FC = () => {
-   const [dueDate, setdueDate] = useState<Date | null>(null);
+
+interface Props {
+   onAdd(title: string, dueDate?: Date | null): void;
+   onMute?(): void;
+ }
+
+const AddTask: React.FC<Props> = ({onAdd}: Props) => {
+   const [dueDate, setdueDate] = useState<Date | null >(null);
    const [showDatePicker, setShowDatePicker] = useState(false);
+   const [title, setTitle] = useState("");
    const handleDueDateChange = (date: Date) => {
       setdueDate(date);
       setShowDatePicker(false);
    };
+   const handleAddToDoTask = () =>{
+      onAdd(title,dueDate)
+      setTitle("")
+   }
    return (
       <>
          <div className="pb-2">
@@ -15,6 +26,8 @@ const AddTask: React.FC = () => {
                <MDBCardBody>
                   <div className="d-flex flex-row align-items-center">
                      <input
+                     onChange={(e)=>setTitle(e.target.value)}
+                     value={title}
                         type="text"
                         className="form-control form-control-lg"
                         id="exampleFormControlInput1"
@@ -36,7 +49,7 @@ const AddTask: React.FC = () => {
                         open={showDatePicker}
                      />
                      <div>
-                        <MDBBtn>Add</MDBBtn>
+                        <MDBBtn onClick={handleAddToDoTask}>Add</MDBBtn>
                      </div>
                   </div>
                </MDBCardBody>
