@@ -20,9 +20,9 @@ import {
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
 interface Props {
    tasks: ToDoTask[];
-   onStatusChange: (toDoTask: ToDoTask) => void;
-   onUpdate: (toDoTask: ToDoTask) => void;
-   onDelete: (id: string) => void;
+   onStatusChange: (toDoTask: ToDoTask) =>  Promise<void>;
+   onUpdate: (toDoTask: ToDoTask) => Promise<void>;
+   onDelete: (id: string) =>  Promise<void>;
 }
 
 const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }: Props) => {
@@ -36,32 +36,30 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
       }
    };
 
-   const handleEditClick = (id: GridRowId) => () => {
+   const handleEditClick = (id: GridRowId) => (): void => {
       setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
    };
 
-   const handleSaveClick = (task: ToDoTask) => {
+   const handleSaveClick = (task: ToDoTask): void => {
       console.log(apiRef);
-      debugger;
       setRowModesModel({ ...rowModesModel, [task.id]: { mode: GridRowModes.View } });
    };
-   const handleCancelClick = (id: GridRowId) => () => {
+   const handleCancelClick = (id: GridRowId) => (): void => {
       setRowModesModel({
          ...rowModesModel,
          [id]: { mode: GridRowModes.View, ignoreModifications: true },
       });
    };
 
-   const processRowUpdate = async (newRow: ToDoTask) => {
+   const processRowUpdate = async (newRow: ToDoTask) : Promise<ToDoTask>=> {
       const updatedRow = { ...newRow, isNew: false };
-      if (newRow) {
+      if (newRow !== null) {
          await onUpdate(newRow);
       }
       return updatedRow;
-      return await Promise.reject('Value will automatically updated from server');
    };
 
-   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel):void => {
       setRowModesModel(newRowModesModel);
    };
    const columns: GridColDef[] = [
@@ -73,7 +71,9 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          type: 'actions',
          renderCell: (params) => (
             <MDBCheckbox
-               onChange={() => { onStatusChange(params.row); }}
+               onChange={() => {
+                  onStatusChange(params.row);
+               }}
                checked={params.row.isDone}
             ></MDBCheckbox>
          ),
@@ -93,7 +93,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          valueGetter: (params) => {
             return stringToDate(params.value);
          },
-         renderCell: (params) => <>{params.value && formatDate(params.value)}</>,
+         renderCell: (params) => <>{params.value!==null && formatDate(params.value)}</>,
       },
       {
          field: 'actions',
@@ -107,14 +107,18 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
             if (isInEditMode) {
                return [
                   <GridActionsCellItem
+                     key={1}
                      icon={<SaveIcon />}
                      label="Save"
                      sx={{
                         color: 'primary.main',
                      }}
-                     onClick={() => { handleSaveClick(row); }}
+                     onClick={() => {
+                        handleSaveClick(row);
+                     }}
                   />,
                   <GridActionsCellItem
+                     key={1}
                      icon={<CancelIcon />}
                      label="Cancel"
                      className="textPrimary"
@@ -126,6 +130,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
 
             return [
                <GridActionsCellItem
+                  key={1}
                   icon={<EditIcon />}
                   label="Edit"
                   className="textPrimary"
@@ -133,9 +138,12 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                   color="inherit"
                />,
                <GridActionsCellItem
+                  key={1}
                   icon={<DeleteIcon />}
                   label="Delete"
-                  onClick={() => { onDelete(row.id); }}
+                  onClick={() => {
+                     onDelete(row.id);
+                  }}
                   color="inherit"
                />,
             ];

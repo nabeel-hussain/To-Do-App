@@ -1,7 +1,8 @@
+import React from "react"
 import { Box, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import classes from 'pages/NotFound/NotFound.module.scss';
-const NotFound = () => {
+const NotFound: React.FC = () => {
    return (
       <Box className={classes.notFoundContainer}>
          <Typography variant="h1" className={classes.notFoundText}>

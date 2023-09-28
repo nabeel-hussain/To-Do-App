@@ -9,37 +9,35 @@ const ToDoTask: React.FC = () => {
    const [taskList, setTaskList] = useState<ToDoTask[]>([]);
 
    useEffect(() => {
-      getToDoAllTasks();
+      getToDoAllTasks().then().catch();
    }, []);
 
-   const AddNewTask = async (title: string, dueDate?: Date | null) => {
-         const newTask = await addTask(title, dueDate);
-         getToDoAllTasks();
-         console.log(newTask);
-   }
-   const getToDoAllTasks = async () => {
+   const AddNewTask = async (title: string, dueDate?: Date | null): Promise<void> => {
+      const newTask = await addTask(title, dueDate);
+      await getToDoAllTasks().then().catch();
+      console.log(newTask);
+   };
+   const getToDoAllTasks = async (): Promise<void> => {
       const toDoTasks = await getTasks();
       setTaskList(toDoTasks);
       console.log(toDoTasks);
    };
 
-   const handleDeleteToDoTask = async (id: string) => {
+   const handleDeleteToDoTask = async (id: string): Promise<void> => {
       await deleteTask(id);
-      toast.success("The task has been successfully deleted.");
-      getToDoAllTasks();
+      toast.success('The task has been successfully deleted.');
+      await getToDoAllTasks();
    };
-   const handleToDoTaskStatusChange = async (toDoTask: ToDoTask) => {
-      debugger;
+   const handleToDoTaskStatusChange = async (toDoTask: ToDoTask): Promise<void> => {
       await updateTask({ ...toDoTask, isDone: !toDoTask.isDone });
 
-      !toDoTask.isDone&&toast.success("Great! The task has been marked as done.");
-      getToDoAllTasks();
+      !toDoTask.isDone && toast.success('Great! The task has been marked as done.');
+      await getToDoAllTasks();
    };
-   const handleToDoTaskUpdate = async (toDoTask: ToDoTask) => {
-      debugger;
+   const handleToDoTaskUpdate = async (toDoTask: ToDoTask): Promise<void> => {
       await updateTask(toDoTask);
-      toast.success("Success! The task has been updated.");
-      getToDoAllTasks();
+      toast.success('Success! The task has been updated.');
+      await getToDoAllTasks();
    };
    return (
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
@@ -61,7 +59,6 @@ const ToDoTask: React.FC = () => {
             </MDBCard>
          </MDBCol>
          <ToastContainer />
-
       </MDBRow>
    );
 };

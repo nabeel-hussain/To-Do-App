@@ -20,10 +20,9 @@ httpClient.interceptors.response.use(
    },
    async (error) => {
      // Handle errors here
-     debugger;
-     if (error.response) {
+     if (error.response!==null && error.response!==undefined) {
        // HTTP response error
-       const errorMessage = error.response.data.Errors ?error.response.data.Errors.join(", "):"An error has been occured"
+       const errorMessage = error.response.data.Errors!==null ?error.response.data.Errors.join(", "):"An error has been occured"
        
        toast.error(errorMessage);
        // Render the ErrorMessage component to display the error message

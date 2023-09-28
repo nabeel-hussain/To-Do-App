@@ -3,23 +3,23 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBIcon, MDBTooltip } from 'mdb-react-ui-
 import ReactDatePicker from 'react-datepicker';
 
 interface Props {
-   onAdd: (title: string, dueDate?: Date | null) => void;
+   onAdd: (title: string, dueDate?: Date | null) =>  Promise<void>;
    onMute?: () => void;
- }
+}
 
-const AddTask: React.FC<Props> = ({onAdd}: Props) => {
-   const [dueDate, setdueDate] = useState<Date | null >(null);
+const AddTask: React.FC<Props> = ({ onAdd }: Props) => {
+   const [dueDate, setdueDate] = useState<Date | null>(null);
    const [showDatePicker, setShowDatePicker] = useState(false);
-   const [title, setTitle] = useState("");
-   const handleDueDateChange = (date: Date) => {
+   const [title, setTitle] = useState('');
+   const handleDueDateChange = (date: Date): void => {
       setdueDate(date);
       setShowDatePicker(false);
    };
-   const handleAddToDoTask = () =>{
-      onAdd(title,dueDate)
-      setTitle("")
-      setdueDate(null)
-   }
+   const handleAddToDoTask = async (): Promise<void> => {
+      await onAdd(title, dueDate).then().catch();
+      setTitle('');
+      setdueDate(null);
+   };
    return (
       <>
          <div className="pb-2">
@@ -27,8 +27,10 @@ const AddTask: React.FC<Props> = ({onAdd}: Props) => {
                <MDBCardBody>
                   <div className="d-flex flex-row align-items-center">
                      <input
-                     onChange={(e)=>{ setTitle(e.target.value); }}
-                     value={title}
+                        onChange={(e) => {
+                           setTitle(e.target.value);
+                        }}
+                        value={title}
                         type="text"
                         className="form-control form-control-lg"
                         id="exampleFormControlInput1"
@@ -40,7 +42,9 @@ const AddTask: React.FC<Props> = ({onAdd}: Props) => {
                            icon="calendar-alt"
                            size="lg"
                            className="me-3"
-                           onClick={() => { setShowDatePicker(!showDatePicker); }}
+                           onClick={() => {
+                              setShowDatePicker(!showDatePicker);
+                           }}
                         />{' '}
                      </MDBTooltip>
 
