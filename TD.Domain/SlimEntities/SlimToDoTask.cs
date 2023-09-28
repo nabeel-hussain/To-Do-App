@@ -5,4 +5,4 @@ public sealed record SlimToDoTask(
     string Title,
     DateTimeOffset CreationDate,
     bool IsDone,
-    DateTimeOffset DueDate);
+    DateTimeOffset? DueDate);

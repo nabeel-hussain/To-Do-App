@@ -16,3 +16,8 @@ export const updateTask = async (toDoTask: ToDoTask) =>{
     let result: ToDoTask = res.data;
     return result;
 }
+export const deleteTask = async (id: string) =>{
+    let res = await httpClient.delete("/api/ToDoTask/Delete",{params: {id}})
+    let result: ToDoTask = res.data;
+    return result;
+}

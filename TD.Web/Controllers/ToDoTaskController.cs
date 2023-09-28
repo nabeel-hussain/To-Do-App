@@ -48,7 +48,7 @@ public class ToDoTaskController : ToDoBaseController
     }
 
     [HttpDelete]
-    public async Task Delete(DeleteToDoTaskCommand command)
+    public async Task Delete([FromQuery] DeleteToDoTaskCommand command)
     {
         await _mediator.Send(command);
     }

@@ -6,17 +6,41 @@ import {
    MDBTable,
    MDBTableBody,
    MDBTableHead,
+   MDBBadge,
 } from 'mdb-react-ui-kit';
 
-import { formatDate } from 'utils/formatting';
+import { formatDate, isDatePassed } from 'utils/formatting';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 
 interface Props {
    tasks: ToDoTask[];
    onStatusChange(toDoTask: ToDoTask): void;
+   onDelete(id: string): void;
 }
 
-const TaskList: React.FC<Props> = ({ tasks, onStatusChange }: Props) => {
+const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete }: Props) => {
+   const renderTaskTitle = (task: ToDoTask) => {
+      if (task.isDone) {
+         return (
+            <p>
+               <s>{task.title}</s>
+            </p>
+         );
+      } else if (isDatePassed(task.dueDate)) {
+         return <p className="text-danger">{task.title}</p>;
+      } else {
+         return <p>{task.title}</p>;
+      }
+   };
+   const renderTaskDueDate = (task: ToDoTask) => {
+      if (task.dueDate)
+         if (task.isDone) {
+            return <p>{formatDate(task.dueDate)}</p>;
+         } else if (isDatePassed(task.dueDate)) {
+            return <p className="text-danger">{formatDate(task.dueDate)}</p>;
+         }
+      return '';
+   };
    return (
       <>
          <div className="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
@@ -31,7 +55,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange }: Props) => {
                />
             </MDBTooltip>
          </div>
-         <Scrollbars style={{  height: 400 }}>
+         <Scrollbars style={{ height: 400 }}>
             <MDBTable className="mb-0">
                <MDBTableHead>
                   <tr>
@@ -44,22 +68,21 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange }: Props) => {
                <MDBTableBody>
                   {tasks?.map((task) => (
                      <tr className="fw-normal">
-                        <td>
                            <th scope="col">
                               <MDBCheckbox
                                  onChange={(e) => onStatusChange(task)}
                                  checked={task.isDone}
                               ></MDBCheckbox>
                            </th>
-                        </td>
-                        <td className="align-middle">{task.title}</td>
-                        <td className="align-middle">{formatDate(task.creationDate)}</td>
+                        <td className="align-middle">{renderTaskTitle(task)}</td>
+                        <td className="align-middle">{renderTaskDueDate(task)}</td>
                         <td className="align-middle">
                            <MDBTooltip tag="a" wrapperProps={{ href: '#!' }} title="Edit todo">
                               <MDBIcon fas icon="pencil-alt" className="me-3" color="info" />
                            </MDBTooltip>
                            <MDBTooltip tag="a" wrapperProps={{ href: '#!' }} title="Remove">
                               <MDBIcon
+                                 onClick={() => onDelete(task.id)}
                                  fas
                                  icon="trash-alt"
                                  color="danger"

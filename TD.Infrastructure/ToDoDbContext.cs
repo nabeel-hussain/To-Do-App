@@ -17,6 +17,8 @@ public sealed class ToDoDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ToDoDbContext).Assembly);
+        modelBuilder.Entity<ToDoTask>().HasQueryFilter(p => p.Deleted==null);
+
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

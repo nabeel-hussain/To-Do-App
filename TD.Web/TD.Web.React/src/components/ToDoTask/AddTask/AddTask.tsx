@@ -18,6 +18,7 @@ const AddTask: React.FC<Props> = ({onAdd}: Props) => {
    const handleAddToDoTask = () =>{
       onAdd(title,dueDate)
       setTitle("")
+      setdueDate(null)
    }
    return (
       <>
