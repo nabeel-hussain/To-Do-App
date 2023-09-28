@@ -11,14 +11,14 @@ const httpClient = axios.create({
    }
 });
 
-//All request will wait 2 seconds before timeout
+// All request will wait 2 seconds before timeout
 httpClient.defaults.timeout = 2000;
 httpClient.interceptors.response.use(
    (response) => {
      // Handle successful responses here
      return response;
    },
-   (error) => {
+   async (error) => {
      // Handle errors here
      debugger;
      if (error.response) {
@@ -31,7 +31,7 @@ httpClient.interceptors.response.use(
        // Network error
        // You can handle network errors differently
      }
-     return Promise.reject(error);
+     return await Promise.reject(error);
    }
  );
 export default httpClient;

@@ -3,8 +3,8 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBIcon, MDBTooltip } from 'mdb-react-ui-
 import ReactDatePicker from 'react-datepicker';
 
 interface Props {
-   onAdd(title: string, dueDate?: Date | null): void;
-   onMute?(): void;
+   onAdd: (title: string, dueDate?: Date | null) => void;
+   onMute?: () => void;
  }
 
 const AddTask: React.FC<Props> = ({onAdd}: Props) => {
@@ -27,7 +27,7 @@ const AddTask: React.FC<Props> = ({onAdd}: Props) => {
                <MDBCardBody>
                   <div className="d-flex flex-row align-items-center">
                      <input
-                     onChange={(e)=>setTitle(e.target.value)}
+                     onChange={(e)=>{ setTitle(e.target.value); }}
                      value={title}
                         type="text"
                         className="form-control form-control-lg"
@@ -40,7 +40,7 @@ const AddTask: React.FC<Props> = ({onAdd}: Props) => {
                            icon="calendar-alt"
                            size="lg"
                            className="me-3"
-                           onClick={() => setShowDatePicker(!showDatePicker)}
+                           onClick={() => { setShowDatePicker(!showDatePicker); }}
                         />{' '}
                      </MDBTooltip>
 

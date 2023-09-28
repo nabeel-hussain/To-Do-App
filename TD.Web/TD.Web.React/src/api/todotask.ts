@@ -1,23 +1,23 @@
 import httpClient from "shared/http/httpClient";
 
 export const getTasks = async () => {
-    let res = await httpClient.get("/api/ToDoTask/Get");
-    let result: Array<ToDoTask> = res.data;
+    const res = await httpClient.get("/api/ToDoTask/Get");
+    const result: ToDoTask[] = res.data;
     return result;
   };
 
-export const addTask = async (title: string, dueDate: Date) =>{
-    let res = await httpClient.post("/api/ToDoTask/Create",{title,dueDate})
-    let result: ToDoTask = res.data;
+export const addTask = async (title: string, dueDate?: Date| null) =>{
+    const res = await httpClient.post("/api/ToDoTask/Create",{title,dueDate})
+    const result: ToDoTask = res.data;
     return result;
 }
 export const updateTask = async (toDoTask: ToDoTask) =>{
-    let res = await httpClient.put("/api/ToDoTask/Update",toDoTask)
-    let result: ToDoTask = res.data;
+    const res = await httpClient.put("/api/ToDoTask/Update",toDoTask)
+    const result: ToDoTask = res.data;
     return result;
 }
 export const deleteTask = async (id: string) =>{
-    let res = await httpClient.delete("/api/ToDoTask/Delete",{params: {id}})
-    let result: ToDoTask = res.data;
+    const res = await httpClient.delete("/api/ToDoTask/Delete",{params: {id}})
+    const result: ToDoTask = res.data;
     return result;
 }

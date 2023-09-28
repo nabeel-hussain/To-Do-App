@@ -12,18 +12,13 @@ const ToDoTask: React.FC = () => {
       getToDoAllTasks();
    }, []);
 
-   const AddNewTask = async (title: string, dueDate: Date) => {
-      try {
-         let newTask = await addTask(title, dueDate);
+   const AddNewTask = async (title: string, dueDate?: Date | null) => {
+         const newTask = await addTask(title, dueDate);
          getToDoAllTasks();
          console.log(newTask);
-      } catch (ex) {
-         console.log(ex);
-      }
-   };
-
+   }
    const getToDoAllTasks = async () => {
-      let toDoTasks = await getTasks();
+      const toDoTasks = await getTasks();
       setTaskList(toDoTasks);
       console.log(toDoTasks);
    };

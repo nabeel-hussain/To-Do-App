@@ -7,22 +7,22 @@ import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
 import {
-   GridRowModesModel,
+   type GridRowModesModel,
    GridRowModes,
    DataGrid,
-   GridColDef,
+   type GridColDef,
    GridActionsCellItem,
-   GridEventListener,
-   GridRowId,
+   type GridEventListener,
+   type GridRowId,
    GridRowEditStopReasons,
    useGridApiRef,
 } from '@mui/x-data-grid';
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
 interface Props {
    tasks: ToDoTask[];
-   onStatusChange(toDoTask: ToDoTask): void;
-   onUpdate(toDoTask: ToDoTask): void;
-   onDelete(id: string): void;
+   onStatusChange: (toDoTask: ToDoTask) => void;
+   onUpdate: (toDoTask: ToDoTask) => void;
+   onDelete: (id: string) => void;
 }
 
 const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }: Props) => {
@@ -58,7 +58,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          await onUpdate(newRow);
       }
       return updatedRow;
-      return Promise.reject('Value will automatically updated from server');
+      return await Promise.reject('Value will automatically updated from server');
    };
 
    const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -73,7 +73,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          type: 'actions',
          renderCell: (params) => (
             <MDBCheckbox
-               onChange={() => onStatusChange(params.row)}
+               onChange={() => { onStatusChange(params.row); }}
                checked={params.row.isDone}
             ></MDBCheckbox>
          ),
@@ -112,7 +112,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                      sx={{
                         color: 'primary.main',
                      }}
-                     onClick={() => handleSaveClick(row)}
+                     onClick={() => { handleSaveClick(row); }}
                   />,
                   <GridActionsCellItem
                      icon={<CancelIcon />}
@@ -135,7 +135,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                <GridActionsCellItem
                   icon={<DeleteIcon />}
                   label="Delete"
-                  onClick={() => onDelete(row.id)}
+                  onClick={() => { onDelete(row.id); }}
                   color="inherit"
                />,
             ];
