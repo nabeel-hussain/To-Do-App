@@ -1,24 +1,35 @@
 import React from 'react';
 import {
    MDBCheckbox,
-   MDBIcon,
-   MDBTooltip,
-   MDBTable,
-   MDBTableBody,
-   MDBTableHead,
-   MDBBadge,
 } from 'mdb-react-ui-kit';
-
-import { formatDate, isDatePassed } from 'utils/formatting';
+import { formatDate, isDatePassed, stringToDate } from 'utils/formatting';
 import { Scrollbars } from 'react-custom-scrollbars-2';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Close';
+import {
+   GridRowModesModel,
+   GridRowModes,
+   DataGrid,
+   GridColDef,
+   GridActionsCellItem,
+   GridEventListener,
+   GridRowId,
+   GridRowEditStopReasons,
+   useGridApiRef,
+} from '@mui/x-data-grid';
 interface Props {
    tasks: ToDoTask[];
    onStatusChange(toDoTask: ToDoTask): void;
+   onUpdate(toDoTask: ToDoTask): void;
    onDelete(id: string): void;
 }
 
-const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete }: Props) => {
+const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }: Props) => {
+   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+   const apiRef = useGridApiRef();
+
    const renderTaskTitle = (task: ToDoTask) => {
       if (task.isDone) {
          return (
@@ -41,60 +52,134 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete }: Props) =
          }
       return '';
    };
+   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
+      console.log(params);
+      if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+         event.defaultMuiPrevented = true;
+      }
+   };
+
+   const handleEditClick = (id: GridRowId) => () => {
+      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+   };
+
+   const handleSaveClick = (task: ToDoTask) => {
+      console.log(apiRef);
+      debugger;
+      setRowModesModel({ ...rowModesModel, [task.id]: { mode: GridRowModes.View } });
+   };
+   const handleCancelClick = (id: GridRowId) => () => {
+      setRowModesModel({
+         ...rowModesModel,
+         [id]: { mode: GridRowModes.View, ignoreModifications: true },
+      });
+   };
+
+   const processRowUpdate = (newRow: ToDoTask) => {
+      const updatedRow = { ...newRow, isNew: false };
+      if (newRow) {
+         onUpdate(newRow);
+      }
+      return updatedRow;
+   };
+
+   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+      setRowModesModel(newRowModesModel);
+   };
+   const columns: GridColDef[] = [
+      {
+         field: '',
+         headerName: '',
+         width: 30,
+         sortable: false,
+         type: 'actions',
+         renderCell: (params) => (
+            <MDBCheckbox
+               onChange={() => onStatusChange(params.row)}
+               checked={params.row.isDone}
+            ></MDBCheckbox>
+         ),
+      },
+      {
+         field: 'title',
+         headerName: 'Task',
+         width: 500,
+         editable: true,
+      },
+      {
+         field: 'dueDate',
+         headerName: 'Due Date',
+         type: 'date',
+         width: 250,
+         editable: true,
+         valueGetter: (params) => {
+            return stringToDate(params.value);
+         },
+         renderCell: (params) => <>{params.value && formatDate(params.value)}</>,
+      },
+      {
+         field: 'actions',
+         type: 'actions',
+         headerName: 'Actions',
+         width: 100,
+         cellClassName: 'actions',
+         getActions: ({ id, row }) => {
+            const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+            if (isInEditMode) {
+               return [
+                  <GridActionsCellItem
+                     icon={<SaveIcon />}
+                     label="Save"
+                     sx={{
+                        color: 'primary.main',
+                     }}
+                     onClick={() => handleSaveClick(row)}
+                  />,
+                  <GridActionsCellItem
+                     icon={<CancelIcon />}
+                     label="Cancel"
+                     className="textPrimary"
+                     onClick={handleCancelClick(id)}
+                     color="inherit"
+                  />,
+               ];
+            }
+
+            return [
+               <GridActionsCellItem
+                  icon={<EditIcon />}
+                  label="Edit"
+                  className="textPrimary"
+                  onClick={handleEditClick(id)}
+                  color="inherit"
+               />,
+               <GridActionsCellItem
+                  icon={<DeleteIcon />}
+                  label="Delete"
+                  onClick={() => onDelete(row.id)}
+                  color="inherit"
+               />,
+            ];
+         },
+      },
+   ];
    return (
       <>
-         <div className="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
-            <p className="small mb-0 me-2 text-muted">Filter</p>
-
-            <MDBTooltip tag="a" wrapperProps={{ href: '#!' }} title="Ascending">
-               <MDBIcon
-                  fas
-                  icon="sort-amount-down-alt"
-                  className="ms-2"
-                  style={{ color: '#23af89' }}
-               />
-            </MDBTooltip>
-         </div>
+      
          <Scrollbars style={{ height: 400 }}>
-            <MDBTable className="mb-0">
-               <MDBTableHead>
-                  <tr>
-                     <th scope="col"></th>
-                     <th scope="col">Task</th>
-                     <th scope="col">Due Date</th>
-                     <th scope="col">Actions</th>
-                  </tr>
-               </MDBTableHead>
-               <MDBTableBody>
-                  {tasks?.map((task) => (
-                     <tr className="fw-normal">
-                           <th scope="col">
-                              <MDBCheckbox
-                                 onChange={(e) => onStatusChange(task)}
-                                 checked={task.isDone}
-                              ></MDBCheckbox>
-                           </th>
-                        <td className="align-middle">{renderTaskTitle(task)}</td>
-                        <td className="align-middle">{renderTaskDueDate(task)}</td>
-                        <td className="align-middle">
-                           <MDBTooltip tag="a" wrapperProps={{ href: '#!' }} title="Edit todo">
-                              <MDBIcon fas icon="pencil-alt" className="me-3" color="info" />
-                           </MDBTooltip>
-                           <MDBTooltip tag="a" wrapperProps={{ href: '#!' }} title="Remove">
-                              <MDBIcon
-                                 onClick={() => onDelete(task.id)}
-                                 fas
-                                 icon="trash-alt"
-                                 color="danger"
-                                 size="lg"
-                                 className="me-3"
-                              />
-                           </MDBTooltip>
-                        </td>
-                     </tr>
-                  ))}
-               </MDBTableBody>
-            </MDBTable>{' '}
+            <DataGrid
+               apiRef={apiRef}
+               hideFooterPagination={true}
+               rowSelection={false}
+               rows={tasks}
+               columns={columns}
+               editMode="row"
+               rowModesModel={rowModesModel}
+               onRowModesModelChange={handleRowModesModelChange}
+               onRowEditStop={handleRowEditStop}
+               processRowUpdate={processRowUpdate}
+            />
          </Scrollbars>
       </>
    );

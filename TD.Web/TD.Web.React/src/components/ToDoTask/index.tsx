@@ -34,6 +34,11 @@ const handleToDoTaskStatusChange = async (toDoTask: ToDoTask) => {
       await updateTask({...toDoTask, isDone: !toDoTask.isDone})
       getToDoAllTasks();
 }
+const handleToDoTaskUpdate = async (toDoTask: ToDoTask) => {
+   debugger;
+   await updateTask(toDoTask)
+   getToDoAllTasks();
+}
    return (
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
          <MDBCol>
@@ -44,7 +49,7 @@ const handleToDoTaskStatusChange = async (toDoTask: ToDoTask) => {
                      Tasks
                   </p>
                   <AddTask onAdd={AddNewTask}/> <hr className="my-4" />
-                  <TaskList tasks={taskList} onStatusChange={handleToDoTaskStatusChange} onDelete={handleDeleteToDoTask} />
+                  <TaskList onUpdate={handleToDoTaskUpdate} tasks={taskList} onStatusChange={handleToDoTaskStatusChange} onDelete={handleDeleteToDoTask} />
                  
                </MDBCardBody>
             </MDBCard>
