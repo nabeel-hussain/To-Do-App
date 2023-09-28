@@ -1,12 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import PageLoading from 'components/page-loading/PageLoading';
-import Page from 'components/page/Page';
+import PageLoading from 'components/PageLoading/PageLoading';
+import Page from 'components/Page/Page';
 
 import paths from 'routes/paths';
 
-const Home = lazy(async () => await import('pages/home/Home'));
+const Home = lazy(async () => await import('pages/Home/Home'));
 // const PageNotFound = lazy(() => import('pages/page-not-found/PageNotFound'));
 
 interface Routes {

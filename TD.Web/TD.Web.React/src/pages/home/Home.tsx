@@ -1,8 +1,8 @@
 import React from 'react';
-import AddToDoTask from 'components/to-do/AddToDoTask';
+import ToDoTask from 'components/ToDoTask';
 const Home: React.FC = () => {
    return (
-    <AddToDoTask></AddToDoTask>
+    <ToDoTask/>
    );
 };
 

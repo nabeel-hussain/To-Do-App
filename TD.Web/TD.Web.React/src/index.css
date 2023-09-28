@@ -11,3 +11,9 @@ body {
 #list1 .select-input.form-control[readonly]:not([disabled]) {
   background-color: #fbfbfb;
 }
+
+/*   */
+
+.react-datepicker-wrapper input,.react-datepicker__triangle{
+  display: none !important;
+}
