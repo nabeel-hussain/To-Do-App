@@ -1,60 +1,16 @@
-import axios, {
-   AxiosInstance,
-   AxiosResponse,
-   Method,
-   InternalAxiosRequestConfig,
-   AxiosPromise,
-} from 'axios';
+import axios from 'axios';
 
-export interface Request {
-    headers?: Record<string, string>;
-    data?: any;
-    params?: any;
- }
-export class HttpClient {
-   private readonly httpClient: AxiosInstance;
-
-   constructor() {
-      this.httpClient = axios.create({
-         baseURL: 'https://jsonplaceholder.typicode.com',
-         timeout: 60000,
-      });
+const httpClient = axios.create({
+   baseURL :'https://localhost:7049',
+   headers :{
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'x-api-key': "test",
+      "Access-Control-Allow-Origin": "*"
    }
-   private async handleRequest(
-    url: string,
-    method: Method,
-    config: Request = {},
- ): Promise<AxiosResponse<any>> {
-    const { headers, data, params } = config;
-    const response = await this.httpClient.request({
-       url,
-       method,
-       data,
-       params,
-       headers,
-    });
-    return response;
-}
+});
 
-public get<T>(url: string, config: Request = {}): AxiosPromise<T> {
-  return this.handleRequest(url, 'get', config);
-}
+//All request will wait 2 seconds before timeout
+httpClient.defaults.timeout = 2000;
 
-public post<T>(url: string, config: Request = {}): AxiosPromise<T> {
-  return this.handleRequest(url, 'post', config);
-}
-
-public put<T>(url: string, config: Request = {}): AxiosPromise<T> {
-  return this.handleRequest(url, 'put', config);
-}
-
-public delete<T>(url: string, config: Request = {}): AxiosPromise<T> {
-  return this.handleRequest(url, 'delete', config);
-}
-
-public patch<T>(url: string, config: Request = {}): AxiosPromise<T> {
-  return this.handleRequest(url, 'patch', config);
-}
-}
-
-export default new HttpClient();
+export default httpClient;

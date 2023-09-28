@@ -50,6 +50,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(builder =>
+            builder
+            .WithOrigins("*")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 }
 app.UseMiddleware<ErrorHandlerMiddleware>(app.Environment);
 
@@ -59,5 +64,4 @@ app.UseAuthorization();
 
 app.MapControllers()
     .RequireAuthorization();
-
 app.Run();
