@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-   MDBCheckbox,
-} from 'mdb-react-ui-kit';
+import { MDBCheckbox } from 'mdb-react-ui-kit';
 import { formatDate, isDatePassed, stringToDate } from 'utils/formatting';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,6 +17,7 @@ import {
    GridRowEditStopReasons,
    useGridApiRef,
 } from '@mui/x-data-grid';
+import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
 interface Props {
    tasks: ToDoTask[];
    onStatusChange(toDoTask: ToDoTask): void;
@@ -30,28 +29,6 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
    const apiRef = useGridApiRef();
 
-   const renderTaskTitle = (task: ToDoTask) => {
-      if (task.isDone) {
-         return (
-            <p>
-               <s>{task.title}</s>
-            </p>
-         );
-      } else if (isDatePassed(task.dueDate)) {
-         return <p className="text-danger">{task.title}</p>;
-      } else {
-         return <p>{task.title}</p>;
-      }
-   };
-   const renderTaskDueDate = (task: ToDoTask) => {
-      if (task.dueDate)
-         if (task.isDone) {
-            return <p>{formatDate(task.dueDate)}</p>;
-         } else if (isDatePassed(task.dueDate)) {
-            return <p className="text-danger">{formatDate(task.dueDate)}</p>;
-         }
-      return '';
-   };
    const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
       console.log(params);
       if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -75,12 +52,13 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
       });
    };
 
-   const processRowUpdate = (newRow: ToDoTask) => {
+   const processRowUpdate = async (newRow: ToDoTask) => {
       const updatedRow = { ...newRow, isNew: false };
       if (newRow) {
-         onUpdate(newRow);
+         await onUpdate(newRow);
       }
       return updatedRow;
+      return Promise.reject('Value will automatically updated from server');
    };
 
    const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -166,8 +144,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
    ];
    return (
       <>
-      
-         <Scrollbars style={{ height: 400 }}>
+         <Scrollbars className={classes.scrollBars}>
             <DataGrid
                apiRef={apiRef}
                hideFooterPagination={true}
@@ -179,6 +156,14 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                onRowModesModelChange={handleRowModesModelChange}
                onRowEditStop={handleRowEditStop}
                processRowUpdate={processRowUpdate}
+               getRowClassName={(params) => {
+                  if (params.row.isDone) {
+                     return classes.doneTask;
+                  } else if (isDatePassed(params.row.dueDate)) {
+                     return classes.overDueTask;
+                  }
+                  return '';
+               }}
             />
          </Scrollbars>
       </>

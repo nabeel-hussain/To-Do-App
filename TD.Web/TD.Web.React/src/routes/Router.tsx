@@ -6,8 +6,8 @@ import Page from 'components/Page/Page';
 
 import paths from 'routes/paths';
 
-const Home = lazy(async () => await import('pages/Home/Home'));
-// const PageNotFound = lazy(() => import('pages/page-not-found/PageNotFound'));
+const Home = lazy(async () => await import('pages/Home'));
+const NotFound = lazy(async ()=>await import('pages/NotFound'))
 
 interface Routes {
    path: string;
@@ -24,7 +24,7 @@ const getRouteElement = (Component: React.ElementType): React.ReactNode => (
 
 const routes: Routes[] = [
    { path: paths.HOME, element: getRouteElement(Home) },
-//    { path: paths.NOT_FOUND, element: getRouteElement(PageNotFound) },
+   {path: paths.NOT_FOUND,element: getRouteElement(NotFound)}
 ];
 const browserRoutes = createBrowserRouter(routes)
 export default browserRoutes;

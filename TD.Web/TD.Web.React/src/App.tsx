@@ -1,16 +1,19 @@
-import React from 'react'
+import React from 'react';
 import { RouterProvider } from 'react-router-dom';
 import Router from 'routes/Router';
-import "App.css"
+import 'App.css';
+import ErrorBoundary from 'components/ErrorBoundary';
 const App: React.FC = () => {
-  const s: string = 'application';
-  console.log(s);
+   const s: string = 'application';
+   console.log(s);
 
-  return (
-    <>
-     <RouterProvider router={Router} />
-    </>
-  );
+   return (
+      <>
+         <ErrorBoundary>
+            <RouterProvider router={Router} />
+         </ErrorBoundary>
+      </>
+   );
 };
 
-export default App
+export default App;

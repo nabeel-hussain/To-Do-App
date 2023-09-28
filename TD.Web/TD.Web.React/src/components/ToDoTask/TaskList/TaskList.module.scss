@@ -1,0 +1,13 @@
+.overDueTask,
+.overDueTask .Mui-selected {
+   background-color: rgb(241, 192, 192);
+}
+.overDueTask:hover {
+   background-color: rgb(241, 192, 192) !important;
+}
+.scrollBars {
+   height: 400px !important;
+}
+.doneTask {
+    text-decoration: line-through;
+  }
