@@ -48,14 +48,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
     app.UseCors(builder =>
             builder
             .WithOrigins("*")
             .AllowAnyMethod()
             .AllowAnyHeader());
 }
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseMiddleware<ErrorHandlerMiddleware>(app.Environment);
 
 app.UseHttpsRedirection();

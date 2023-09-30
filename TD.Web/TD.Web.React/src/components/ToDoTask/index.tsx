@@ -14,6 +14,7 @@ const ToDoTask: React.FC = () => {
 
    const AddNewTask = async (title: string, dueDate?: Date | null): Promise<void> => {
       const newTask = await addTask(title, dueDate);
+      toast.success('The task has been successfully added.');
       await getToDoAllTasks().then().catch();
       console.log(newTask);
    };
