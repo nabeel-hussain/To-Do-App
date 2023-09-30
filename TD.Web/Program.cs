@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TD.Application;
 using TD.Infrastructure;
@@ -56,6 +58,11 @@ if (app.Environment.IsDevelopment())
 }
 app.UseSwagger();
 app.UseSwaggerUI();
+using (var serviceScope = app.Services.CreateScope())
+{
+    var db = serviceScope.ServiceProvider.GetRequiredService<ToDoDbContext>();
+    db.Database.Migrate();
+}
 app.UseMiddleware<ErrorHandlerMiddleware>(app.Environment);
 
 app.UseHttpsRedirection();
