@@ -1,8 +1,8 @@
 import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import PageLoading from '../components/PageLoading';
-// import Page from '../components/Page/Page';
+import PageLoading from 'components/PageLoading';
+import MainPage from 'components/MainPage';
 
 import paths from '../routes/paths';
 
@@ -16,9 +16,9 @@ interface Routes {
 
 const getRouteElement = (Component: React.ElementType): React.ReactNode => (
    <Suspense fallback={<PageLoading />}>
-      <>
+      <MainPage>
          <Component />
-      </>
+      </MainPage>
    </Suspense>
 );
 

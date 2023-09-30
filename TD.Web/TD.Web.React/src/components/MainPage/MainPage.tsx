@@ -5,10 +5,10 @@ interface PageProps {
    children: React.ReactNode | React.ReactNode[];
 }
 
-const Page : React.FC<PageProps> = ({ children }: PageProps) => {
+const MainPage : React.FC<PageProps> = ({ children }: PageProps) => {
 
    return <MDBContainer className="py-5">  {children}  </MDBContainer>
 
 };
 
-export default Page;
+export default MainPage;
