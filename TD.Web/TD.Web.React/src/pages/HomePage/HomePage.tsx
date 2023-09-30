@@ -1,9 +1,9 @@
 import React from 'react';
 import ToDoTask from 'components/ToDoTask';
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
    return (
     <ToDoTask/>
    );
 };
 
-export default Home;
+export default HomePage;
