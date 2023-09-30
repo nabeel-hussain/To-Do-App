@@ -7,6 +7,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'TD.Web/TD.Web.React/**'
+      - '.github/**'
   workflow_dispatch:
 
 jobs:
