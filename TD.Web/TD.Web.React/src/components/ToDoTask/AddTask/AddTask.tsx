@@ -3,7 +3,7 @@ import { MDBBtn, MDBCard, MDBCardBody, MDBIcon, MDBTooltip } from 'mdb-react-ui-
 import ReactDatePicker from 'react-datepicker';
 
 interface Props {
-   onAdd: (title: string, dueDate?: Date | null) =>  Promise<void>;
+   onAdd: (title: string, dueDate?: Date | null) => Promise<void>;
    onMute?: () => void;
 }
 
