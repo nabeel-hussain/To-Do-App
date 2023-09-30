@@ -7,12 +7,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'TD.Web/**'
-      - 'TD.Domain/**'
-      - 'TD.Infrastructure/**'
-      - 'TD.Application/**'
-      - '.github/**'
     paths-ignore:
       - 'TD.Web/TD.Web.React/**'
   workflow_dispatch:
