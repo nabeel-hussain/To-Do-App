@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+const apiKey = import.meta.env.VITE_API_KEY;
 const httpClient = axios.create({
-   baseURL :'https://localhost:7049',
+   baseURL : baseURL,
    headers :{
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'x-api-key': "test",
+      'x-api-key': apiKey,
       "Access-Control-Allow-Origin": "*"
    }
 });

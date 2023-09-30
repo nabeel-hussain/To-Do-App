@@ -4,9 +4,6 @@ import Router from 'routes/Router';
 import 'App.css';
 import ErrorBoundary from 'components/ErrorBoundary';
 const App: React.FC = () => {
-   const s: string = 'application';
-   console.log(s);
-
    return (
       <>
          <ErrorBoundary>

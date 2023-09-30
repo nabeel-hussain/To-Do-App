@@ -18,11 +18,13 @@ import {
    useGridApiRef,
 } from '@mui/x-data-grid';
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
+import { Grid } from '@mui/material';
+import { countPendingTasks } from 'utils/utility';
 interface Props {
    tasks: ToDoTask[];
-   onStatusChange: (toDoTask: ToDoTask) =>  Promise<void>;
+   onStatusChange: (toDoTask: ToDoTask) => Promise<void>;
    onUpdate: (toDoTask: ToDoTask) => Promise<void>;
-   onDelete: (id: string) =>  Promise<void>;
+   onDelete: (id: string) => Promise<void>;
 }
 
 const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }: Props) => {
@@ -51,15 +53,21 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
       });
    };
 
-   const processRowUpdate = async (newRow: ToDoTask) : Promise<ToDoTask>=> {
+   const processRowUpdate = async (newRow: ToDoTask): Promise<ToDoTask> => {
       const updatedRow = { ...newRow, isNew: false };
       if (newRow !== null) {
          await onUpdate(newRow);
       }
       return updatedRow;
    };
-
-   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel):void => {
+   const processFilterChange = async (newRow: ToDoTask): Promise<ToDoTask> => {
+      const updatedRow = { ...newRow, isNew: false };
+      if (newRow !== null) {
+         await onUpdate(newRow);
+      }
+      return updatedRow;
+   };
+   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel): void => {
       setRowModesModel(newRowModesModel);
    };
    const columns: GridColDef[] = [
@@ -93,7 +101,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          valueGetter: (params) => {
             return stringToDate(params.value);
          },
-         renderCell: (params) => <>{params.value!==null && formatDate(params.value)}</>,
+         renderCell: (params) => <>{formatDate(params.value)}</>,
       },
       {
          field: 'actions',
@@ -150,12 +158,13 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          },
       },
    ];
+   debugger;
    return (
       <>
          <Scrollbars className={classes.scrollBars}>
             <DataGrid
                apiRef={apiRef}
-               hideFooterPagination={true}
+               hideFooter={true}
                rowSelection={false}
                rows={tasks}
                columns={columns}
@@ -174,6 +183,15 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                }}
             />
          </Scrollbars>
+         {/* <Grid container spacing={22}>
+            <Grid item xs={4}>
+               <p>{} item(s) left</p>
+            </Grid>
+            <Grid item xs={8}>
+               <p>xs=8</p>
+            </Grid>
+         </Grid>
+         <></> */}
       </>
    );
 };
