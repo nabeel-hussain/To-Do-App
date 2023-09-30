@@ -1,9 +1,9 @@
 #Build Stage
 FROM node:18-alpine as build
 WORKDIR /app
-COPY TD.Web.React/package.json .
+COPY ./TD.Web/TD.Web.React/package.json .
 RUN npm install
-COPY . .
+COPY ./TD.Web/TD.Web.React .
 RUN npm run build
 
 FROM nginx:1.19.0
