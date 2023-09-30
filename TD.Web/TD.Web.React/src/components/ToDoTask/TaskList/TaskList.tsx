@@ -18,8 +18,6 @@ import {
    useGridApiRef,
 } from '@mui/x-data-grid';
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
-import { Grid } from '@mui/material';
-import { countPendingTasks } from 'utils/utility';
 interface Props {
    tasks: ToDoTask[];
    onStatusChange: (toDoTask: ToDoTask) => Promise<void>;
@@ -54,13 +52,6 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
    };
 
    const processRowUpdate = async (newRow: ToDoTask): Promise<ToDoTask> => {
-      const updatedRow = { ...newRow, isNew: false };
-      if (newRow !== null) {
-         await onUpdate(newRow);
-      }
-      return updatedRow;
-   };
-   const processFilterChange = async (newRow: ToDoTask): Promise<ToDoTask> => {
       const updatedRow = { ...newRow, isNew: false };
       if (newRow !== null) {
          await onUpdate(newRow);
