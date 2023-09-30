@@ -2,7 +2,7 @@
 FROM node:18-alpine as build
 WORKDIR /app
 COPY ./TD.Web/TD.Web.React/package.json .
-RUN npm install --omit=dev
+RUN npm install 
 COPY ./TD.Web/TD.Web.React .
 RUN npm run build
 
