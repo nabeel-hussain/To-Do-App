@@ -9,6 +9,7 @@ on:
       - master
     paths:
       - TD.Web.React/**
+      - master_todoapp-vp.yml
   workflow_dispatch:
 
 jobs:
