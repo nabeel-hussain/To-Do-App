@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - master
-    paths: ['.github/workflows/master_todoapp-vp.yml','TD.Web.React/**']
   workflow_dispatch:
 
 jobs:
