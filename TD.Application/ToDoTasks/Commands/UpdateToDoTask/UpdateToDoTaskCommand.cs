@@ -6,5 +6,6 @@ namespace TD.Application.ToDoTasks.Commands.UpdateToDoTask;
 public sealed record  UpdateToDoTaskCommand(
     Guid Id,
     string Title,
-    string Description, 
-    DateTimeOffset DueDate): IRequest<SlimToDoTask>;
+    string? Description,
+    bool? isDone,
+    DateTimeOffset? DueDate): IRequest<SlimToDoTask>;

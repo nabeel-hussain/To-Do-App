@@ -3,6 +3,6 @@
 public sealed record SlimToDoTask(
     Guid Id,
     string Title,
-    string Description,
+    DateTimeOffset CreationDate,
     bool IsDone,
-    DateTimeOffset DueDate);
+    DateTimeOffset? DueDate);

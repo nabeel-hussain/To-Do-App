@@ -23,7 +23,7 @@ namespace TD.Infrastructure
             services.AddDbContext<ToDoDbContext>(dbContextOptionBuilder =>
             {
                 var connectingString = configuration.GetConnectionString("DefaultConnection");
-                dbContextOptionBuilder.UseSqlServer(connectingString);
+                dbContextOptionBuilder.UseSqlite(connectingString);
             });
             return services;
         }
