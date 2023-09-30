@@ -13,24 +13,20 @@ const httpClient = axios.create({
    },
 });
 
-// All request will wait 2 seconds before timeout
-httpClient.defaults.timeout = 2000;
+//Handling Global API Calls error here. 
+//Axios interceptor allows to act like a middleware and hanlde appropriate response and errors. 
 httpClient.interceptors.response.use(
    (response) => {
-      // Handle successful responses here
       return response;
    },
    async (error) => {
-      // Handle errors here
       if (error.response !== null && error.response !== undefined) {
-         // HTTP response error
          const errorMessage =
             error.response.data.Errors !== null
                ? error.response.data.Errors.join(', ')
                : 'An error has been occured';
 
          toast.error(errorMessage);
-         // Render the ErrorMessage component to display the error message
       } else {
          // Network error
          // You can handle network errors differently
