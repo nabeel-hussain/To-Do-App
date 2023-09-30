@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_7a8e2cca089741f8840958c1afbc8cd9 }}/todoapp-vp:${{ github.sha }}
-        file: ./TD.Web/TD.Web.React/Dockerfile
+        file: ./TD.Web/TD.Web.React/Dockerfile.prod
 
   deploy:
     runs-on: ubuntu-latest

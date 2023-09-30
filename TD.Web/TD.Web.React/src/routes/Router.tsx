@@ -5,7 +5,7 @@ import PageLoading from 'components/PageLoading/PageLoading';
 
 import paths from 'routes/paths';
 
-const HomePage = lazy(async () => await import('pages/HomePage/HomePage'));
+const HomePage = lazy(async () => await import('pages/HomePage'));
 const NotFound = lazy(async () => await import('pages/NotFound'));
 
 interface Routes {
