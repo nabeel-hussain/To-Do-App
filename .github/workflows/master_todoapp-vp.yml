@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'TD.Web.React/**'
   workflow_dispatch:
 
 jobs:
@@ -31,7 +33,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_fe99c433b86c44d3b32f8204a625d0a6 }}/todoapp-vp:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./TD.Web/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
