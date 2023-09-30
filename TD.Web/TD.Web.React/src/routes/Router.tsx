@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import PageLoading from 'components/PageLoading/PageLoading';
-import Page from 'components/Page/Page';
+import Page from 'components/Page';
 
 import paths from 'routes/paths';
 
