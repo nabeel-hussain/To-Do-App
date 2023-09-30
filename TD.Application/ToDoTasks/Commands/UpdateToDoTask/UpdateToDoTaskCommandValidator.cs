@@ -6,6 +6,6 @@ public class UpdateToDoTaskCommandValidator : AbstractValidator<UpdateToDoTaskCo
 {
     public UpdateToDoTaskCommandValidator()
     {
-        RuleFor(x => x.Title).NotEmpty().MinimumLength(ValidationConstants.MinimumToDoTaskTitleLength);
+        RuleFor(x => x.Title).NotEmpty().MinimumLength(ValidationConstants.MinimumToDoTaskTitleLength).WithMessage(ValidationMessages.MinimumToDoTaskLengthRequired);
     }
 }

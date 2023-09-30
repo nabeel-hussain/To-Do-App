@@ -7,6 +7,6 @@ public class CreateToDoTaskCommandValidator: AbstractValidator<CreateToDoTaskCom
 {
     public CreateToDoTaskCommandValidator()
     {
-        RuleFor(x => x.Title).NotEmpty().MinimumLength(ValidationConstants.MinimumToDoTaskTitleLength);
+        RuleFor(x => x.Title).NotEmpty().MinimumLength(ValidationConstants.MinimumToDoTaskTitleLength).WithMessage(ValidationMessages.MinimumToDoTaskLengthRequired);
     }
 }
