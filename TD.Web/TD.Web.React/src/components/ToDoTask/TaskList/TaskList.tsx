@@ -16,6 +16,7 @@ import {
    GridRowEditStopReasons,
    useGridApiRef,
    type GridFilterModel,
+   GridLogicOperator,
 } from '@mui/x-data-grid';
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
 import { Backdrop, Box, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
@@ -173,11 +174,12 @@ const TaskList: React.FC<Props> = ({
          filterModel = {
             items: [
                { id: 1, field: 'isDone', operator: 'is', value: newValue === 1 ? 'false' : 'true' },
-            ],
+            ]
          };
       } else if (newValue === 3) {
          filterModel = {
-            items: [{ id: 1, field: 'dueDate', operator: 'before', value: getCurrentDate() }],
+            items: [{ id: 1, field: 'dueDate', operator: 'before', value: getCurrentDate() },{ id: 2, field: 'isDone', operator: 'is', value: 'false' }],
+            logicOperator: GridLogicOperator.And
          };
       }
       setFilterModel(filterModel);
@@ -234,7 +236,7 @@ const TaskList: React.FC<Props> = ({
                apiRef={apiRef}
                hideFooterPagination={true}
                rowSelection={false}
-               rows={tasks}
+               rows={selectedTab===3? tasks.filter(x=>x.isDone===false):tasks}
                columns={columns}
                editMode="row"
                rowModesModel={rowModesModel}
