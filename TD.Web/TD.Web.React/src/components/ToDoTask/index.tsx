@@ -6,50 +6,67 @@ import { addTask, deleteTask, getTasks, updateTask } from 'api/todotask';
 import { ToastContainer, toast } from 'react-toastify';
 
 const ToDoTask: React.FC = () => {
-   const [taskList, setTaskList] = useState<ToDoTask[]>([]);
+
+   const [taskList, setTaskList] = useState<ToDoTask[]>([]); 
    const [loading, setLoading] = useState<boolean>(false);
+
+   // useEffect hook to fetch tasks when the component mounts
    useEffect(() => {
       getToDoAllTasks().then().catch();
    }, []);
 
+   // Function to add a new task
    const AddNewTask = async (title: string, dueDate?: Date | null): Promise<void> => {
       setLoading(true);
       await addTask(title, dueDate).then().catch();
       setLoading(false);
       toast.success('The task has been successfully added.');
 
+      // Refresh the task list
       await getToDoAllTasks().then().catch();
    };
+
+   // Function to fetch all tasks
    const getToDoAllTasks = async (): Promise<void> => {
       setLoading(true);
       const toDoTasks = await getTasks().then().catch();
-      setTaskList(toDoTasks);
+      setTaskList(toDoTasks); // Update the task list with fetched tasks
       setLoading(false);
    };
 
+   // Function to handle task deletion
    const handleDeleteToDoTask = async (id: string): Promise<void> => {
       setLoading(true);
       await deleteTask(id).then().catch();
       setLoading(false);
       toast.success('The task has been successfully deleted.');
+
+      // Refresh the task list
       await getToDoAllTasks();
    };
+
+   // Function to handle task status change
    const handleToDoTaskStatusChange = async (toDoTask: ToDoTask): Promise<void> => {
       setLoading(true);
       await updateTask({ ...toDoTask, isDone: !toDoTask.isDone });
       setLoading(false);
       !toDoTask.isDone && toast.success('Great! The task has been marked as done.');
 
+      // Refresh the task list
       await getToDoAllTasks().then().catch();
    };
+
+   // Function to handle task update
    const handleToDoTaskUpdate = async (toDoTask: ToDoTask): Promise<void> => {
       setLoading(true);
       await updateTask(toDoTask);
       setLoading(false);
       toast.success('Success! The task has been updated.');
 
+      // Refresh the task list
       await getToDoAllTasks().then().catch();
    };
+
    return (
       <>
          <MDBCard id="list1" className="mdbcard-style" style={{}}>
@@ -72,4 +89,5 @@ const ToDoTask: React.FC = () => {
       </>
    );
 };
+
 export default ToDoTask;
