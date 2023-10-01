@@ -1,0 +1,17 @@
+version: '3.8'  # Use the appropriate Docker Compose version
+
+services:
+  backend:
+    build:
+      context: ./TD.Web
+      dockerfile: ./Dockerfile  # Specify the path to the backend Dockerfile
+    ports:
+      - "5001:80"  # Map host port 5000 to container port 80
+  frontend:
+    build:
+      context: ./TD.Web/TD.Web.React
+      dockerfile: ./Dockerfile  # Specify the path to the frontend Dockerfile
+    ports:
+      - "3000:80"  # Map host port 8080 to container port 80
+
+  

@@ -1,7 +1,6 @@
 import React from 'react';
 import { MDBCheckbox } from 'mdb-react-ui-kit';
-import { formatDate, isDatePassed, stringToDate } from 'utils/formatting';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { formatDate, getCurrentDate, isDatePassed, stringToDate } from 'utils/formatting';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
@@ -16,8 +15,11 @@ import {
    type GridRowId,
    GridRowEditStopReasons,
    useGridApiRef,
+   type GridFilterModel,
 } from '@mui/x-data-grid';
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
+import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { countPendingTasks } from 'utils/utility';
 interface Props {
    tasks: ToDoTask[];
    onStatusChange: (toDoTask: ToDoTask) => Promise<void>;
@@ -28,9 +30,9 @@ interface Props {
 const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }: Props) => {
    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
    const apiRef = useGridApiRef();
-
+   const [selectedTab, setSelectedTab] = React.useState(0);
+   const [filterModel, setFilterModel] = React.useState<GridFilterModel>({ items: [] });
    const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
-      console.log(params);
       if (params.reason === GridRowEditStopReasons.rowFocusOut) {
          event.defaultMuiPrevented = true;
       }
@@ -41,7 +43,6 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
    };
 
    const handleSaveClick = (task: ToDoTask): void => {
-      console.log(apiRef);
       setRowModesModel({ ...rowModesModel, [task.id]: { mode: GridRowModes.View } });
    };
    const handleCancelClick = (id: GridRowId) => (): void => {
@@ -80,19 +81,28 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
       {
          field: 'title',
          headerName: 'Task',
-         width: 500,
+         flex: 1,
          editable: true,
+         hideable:false
       },
+
       {
          field: 'dueDate',
          headerName: 'Due Date',
          type: 'date',
-         width: 250,
+         flex: 1,
          editable: true,
          valueGetter: (params) => {
             return stringToDate(params.value);
          },
          renderCell: (params) => <>{formatDate(params.value)}</>,
+      },
+      {
+         field: 'isDone',
+         headerName: 'Status',
+         flex: 1,
+         editable: true,
+         type: 'boolean',
       },
       {
          field: 'actions',
@@ -149,13 +159,65 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          },
       },
    ];
-   debugger;
+   const handleTabChange = (event: React.SyntheticEvent, newValue: number) : void=> {
+      setSelectedTab(newValue);
+      let filterModel: GridFilterModel = { items: [] };
+      if (newValue === 1 || newValue === 2) {
+         filterModel = {
+            items: [
+               { id: 1, field: 'isDone', operator: 'is', value: newValue === 1 ? 'false' : 'true' },
+            ],
+         };
+      } else if (newValue === 3) {
+         filterModel = {
+            items: [{ id: 1, field: 'dueDate', operator: 'before', value: getCurrentDate() }],
+         };
+      }
+      setFilterModel(filterModel);
+   };
+   const CustomFooter = () : React.ReactElement=> {
+      return (
+         <Grid className={classes.gridStyle} item xs={12}>
+            <p>
+               {' '}
+               <b>Total:</b> {tasks.length} <b>Pending</b>: {countPendingTasks(tasks)}
+            </p>
+         </Grid>
+      );
+   };
+   const handleNewFilter = (newFilter: GridFilterModel) :void=> {
+      setFilterModel(newFilter);
+   };
    return (
       <>
-         <Scrollbars className={classes.scrollBars}>
+         <Box className={classes.customBox}>
+            <Tabs
+               value={selectedTab}
+               onChange={handleTabChange}
+               scrollButtons
+               aria-label="visible arrows tabs example"
+            >
+               <Tab label="All" />
+               <Tab label="Pending" />
+               <Tab label="Completed" />
+               <Tab label="Overdue" />
+            </Tabs>
+            <br></br>
             <DataGrid
+               slots={{
+                  footer: CustomFooter,
+               }}
+               initialState={{
+                  columns: {
+                     columnVisibilityModel: {
+                        isDone: false,
+                     },
+                  },
+               }}
+               filterModel={filterModel}
+               onFilterModelChange={(newFilterModel) => { handleNewFilter(newFilterModel); }}
                apiRef={apiRef}
-               hideFooter={true}
+               hideFooterPagination={true}
                rowSelection={false}
                rows={tasks}
                columns={columns}
@@ -173,16 +235,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                   return '';
                }}
             />
-         </Scrollbars>
-         {/* <Grid container spacing={22}>
-            <Grid item xs={4}>
-               <p>{} item(s) left</p>
-            </Grid>
-            <Grid item xs={8}>
-               <p>xs=8</p>
-            </Grid>
-         </Grid>
-         <></> */}
+         </Box>
       </>
    );
 };

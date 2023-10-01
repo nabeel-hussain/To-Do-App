@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 const apiKey = import.meta.env.VITE_API_KEY;
 const httpClient = axios.create({
-   baseURL: baseURL,
+   baseURL,
    headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
@@ -13,8 +13,8 @@ const httpClient = axios.create({
    },
 });
 
-//Handling Global API Calls error here. 
-//Axios interceptor allows to act like a middleware and hanlde appropriate response and errors. 
+// Handling Global API Calls error here. 
+// Axios interceptor allows to act like a middleware and hanlde appropriate response and errors. 
 httpClient.interceptors.response.use(
    (response) => {
       return response;

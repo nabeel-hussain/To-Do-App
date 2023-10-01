@@ -1,11 +1,10 @@
-import { GridRowId, GridValidRowModel } from '@mui/x-data-grid';
-
-export const countPendingTasks = (taskMap: Map<GridRowId, GridValidRowModel>): number => {
-   let count = 0;
-   for (const [, task] of taskMap) {
-      if (!task.isDone) {
-         count++;
-      }
-   }
-   return count;
+export const countPendingTasks = (tasks: ToDoTask[]): number => {
+   const pendingTasks = tasks.filter((task) => !task.isDone);
+   return pendingTasks.length;
+};
+export const isEmptyOrNull = <T>(value?: T | null | undefined): boolean => {
+   return !!(value === undefined || value === null || (typeof value === 'string' && value.trim() === ''));
+};
+export const isNull = <T>(value?: T | null | undefined): boolean => {
+   return !!(value === undefined || value === null);
 };
