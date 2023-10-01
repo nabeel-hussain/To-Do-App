@@ -159,7 +159,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          },
       },
    ];
-   const handleTabChange = (event: React.SyntheticEvent, newValue: number) : void=> {
+   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) : void=> {
       setSelectedTab(newValue);
       let filterModel: GridFilterModel = { items: [] };
       if (newValue === 1 || newValue === 2) {
