@@ -214,7 +214,7 @@ const TaskList: React.FC<Props> = ({
       setFilterModel(filterModel);
    };
 
-   // Custom footer component to display task statistics like Total and Pending Tasks
+   // Custom footer component to display task statistics like Total and Pending
    const CustomFooter = (): React.ReactElement => {
       return (
          <Grid className={classes.gridStyle} item xs={12}>

@@ -18,10 +18,8 @@ const ToDoTask: React.FC = () => {
    // Function to add a new task
    const AddNewTask = async (title: string, dueDate?: Date | null): Promise<void> => {
       setLoading(true);
-      await addTask(title, dueDate).then().catch();
+      await addTask(title, dueDate).then(()=>toast.success('The task has been successfully added.')).catch(()=>{ setLoading(false); });
       setLoading(false);
-      toast.success('The task has been successfully added.');
-
       // Refresh the task list
       await getToDoAllTasks().then().catch();
    };
@@ -37,10 +35,8 @@ const ToDoTask: React.FC = () => {
    // Function to handle task deletion
    const handleDeleteToDoTask = async (id: string): Promise<void> => {
       setLoading(true);
-      await deleteTask(id).then().catch();
+      await deleteTask(id).then(()=>toast.success('The task has been successfully deleted.')).catch(()=>{ setLoading(false); });
       setLoading(false);
-      toast.success('The task has been successfully deleted.');
-
       // Refresh the task list
       await getToDoAllTasks();
    };
@@ -48,10 +44,8 @@ const ToDoTask: React.FC = () => {
    // Function to handle task status change
    const handleToDoTaskStatusChange = async (toDoTask: ToDoTask): Promise<void> => {
       setLoading(true);
-      await updateTask({ ...toDoTask, isDone: !toDoTask.isDone });
+      await updateTask({ ...toDoTask, isDone: !toDoTask.isDone }).then(()=>!toDoTask.isDone && toast.success('Great! The task has been marked as done.')).catch(()=>{ setLoading(false); });
       setLoading(false);
-      !toDoTask.isDone && toast.success('Great! The task has been marked as done.');
-
       // Refresh the task list
       await getToDoAllTasks().then().catch();
    };
@@ -59,10 +53,9 @@ const ToDoTask: React.FC = () => {
    // Function to handle task update
    const handleToDoTaskUpdate = async (toDoTask: ToDoTask): Promise<void> => {
       setLoading(true);
-      await updateTask(toDoTask);
+      await updateTask(toDoTask).then(()=> toast.success('Success! The task has been updated.')).catch(()=>{ setLoading(false); });
       setLoading(false);
-      toast.success('Success! The task has been updated.');
-
+     
       // Refresh the task list
       await getToDoAllTasks().then().catch();
    };
