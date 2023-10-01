@@ -7,37 +7,47 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const ToDoTask: React.FC = () => {
    const [taskList, setTaskList] = useState<ToDoTask[]>([]);
-
+   const [loading, setLoading] = useState<boolean>(false);
    useEffect(() => {
       getToDoAllTasks().then().catch();
    }, []);
 
    const AddNewTask = async (title: string, dueDate?: Date | null): Promise<void> => {
-      const newTask = await addTask(title, dueDate).then().catch();
+      setLoading(true);
+      await addTask(title, dueDate).then().catch();
+      setLoading(false);
       toast.success('The task has been successfully added.');
+
       await getToDoAllTasks().then().catch();
-      console.log(newTask);
    };
    const getToDoAllTasks = async (): Promise<void> => {
+      setLoading(true);
       const toDoTasks = await getTasks().then().catch();
       setTaskList(toDoTasks);
-      console.log(toDoTasks);
+      setLoading(false);
    };
 
    const handleDeleteToDoTask = async (id: string): Promise<void> => {
+      setLoading(true);
       await deleteTask(id).then().catch();
+      setLoading(false);
       toast.success('The task has been successfully deleted.');
       await getToDoAllTasks();
    };
    const handleToDoTaskStatusChange = async (toDoTask: ToDoTask): Promise<void> => {
+      setLoading(true);
       await updateTask({ ...toDoTask, isDone: !toDoTask.isDone });
-
+      setLoading(false);
       !toDoTask.isDone && toast.success('Great! The task has been marked as done.');
+
       await getToDoAllTasks().then().catch();
    };
    const handleToDoTaskUpdate = async (toDoTask: ToDoTask): Promise<void> => {
+      setLoading(true);
       await updateTask(toDoTask);
+      setLoading(false);
       toast.success('Success! The task has been updated.');
+
       await getToDoAllTasks().then().catch();
    };
    return (
@@ -50,6 +60,7 @@ const ToDoTask: React.FC = () => {
                </p>
                <AddTask onAdd={AddNewTask} /> <hr className="my-4" />
                <TaskList
+                  loading={loading}
                   onUpdate={handleToDoTaskUpdate}
                   tasks={taskList}
                   onStatusChange={handleToDoTaskStatusChange}

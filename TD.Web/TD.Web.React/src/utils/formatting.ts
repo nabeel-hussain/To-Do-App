@@ -8,4 +8,4 @@ export const isDatePassed = (n?: Date): boolean => moment(n).isBefore(moment(), 
 
 export const stringToDate = (n?: string): Date => moment(n).toDate();
 
-export const getCurrentDate = ():string=>moment().format('YYYY-MM-DD')
+export const getCurrentDate = (): string => moment().format('YYYY-MM-DD');

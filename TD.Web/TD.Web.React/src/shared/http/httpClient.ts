@@ -13,8 +13,8 @@ const httpClient = axios.create({
    },
 });
 
-// Handling Global API Calls error here. 
-// Axios interceptor allows to act like a middleware and hanlde appropriate response and errors. 
+// Handling Global API Calls error here.
+// Axios interceptor allows to act like a middleware and hanlde appropriate response and errors.
 httpClient.interceptors.response.use(
    (response) => {
       return response;

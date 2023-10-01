@@ -18,16 +18,23 @@ import {
    type GridFilterModel,
 } from '@mui/x-data-grid';
 import classes from 'components/ToDoTask/TaskList/TaskList.module.scss';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
+import { Backdrop, Box, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
 import { countPendingTasks } from 'utils/utility';
 interface Props {
    tasks: ToDoTask[];
    onStatusChange: (toDoTask: ToDoTask) => Promise<void>;
    onUpdate: (toDoTask: ToDoTask) => Promise<void>;
    onDelete: (id: string) => Promise<void>;
+   loading?: boolean;
 }
 
-const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }: Props) => {
+const TaskList: React.FC<Props> = ({
+   tasks,
+   onStatusChange,
+   onDelete,
+   onUpdate,
+   loading,
+}: Props) => {
    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
    const apiRef = useGridApiRef();
    const [selectedTab, setSelectedTab] = React.useState(0);
@@ -83,7 +90,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          headerName: 'Task',
          flex: 1,
          editable: true,
-         hideable:false
+         hideable: false,
       },
 
       {
@@ -159,7 +166,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          },
       },
    ];
-   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) : void=> {
+   const handleTabChange = (_event: React.SyntheticEvent, newValue: number): void => {
       setSelectedTab(newValue);
       let filterModel: GridFilterModel = { items: [] };
       if (newValue === 1 || newValue === 2) {
@@ -175,7 +182,7 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
       }
       setFilterModel(filterModel);
    };
-   const CustomFooter = () : React.ReactElement=> {
+   const CustomFooter = (): React.ReactElement => {
       return (
          <Grid className={classes.gridStyle} item xs={12}>
             <p>
@@ -185,12 +192,18 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
          </Grid>
       );
    };
-   const handleNewFilter = (newFilter: GridFilterModel) :void=> {
+   const handleNewFilter = (newFilter: GridFilterModel): void => {
       setFilterModel(newFilter);
    };
    return (
       <>
          <Box className={classes.customBox}>
+            <Backdrop
+               sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+               open={loading === true ? loading : false}
+            >
+               <CircularProgress color="inherit" title="Loading...." />
+            </Backdrop>
             <Tabs
                value={selectedTab}
                onChange={handleTabChange}
@@ -215,7 +228,9 @@ const TaskList: React.FC<Props> = ({ tasks, onStatusChange, onDelete, onUpdate }
                   },
                }}
                filterModel={filterModel}
-               onFilterModelChange={(newFilterModel) => { handleNewFilter(newFilterModel); }}
+               onFilterModelChange={(newFilterModel) => {
+                  handleNewFilter(newFilterModel);
+               }}
                apiRef={apiRef}
                hideFooterPagination={true}
                rowSelection={false}
