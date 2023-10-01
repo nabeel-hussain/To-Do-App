@@ -1,17 +1,29 @@
-version: '3.8'  # Use the appropriate Docker Compose version
+version: '3.4'
 
 services:
-  backend:
-    build:
-      context: ./TD.Web
-      dockerfile: ./Dockerfile  # Specify the path to the backend Dockerfile
+  SqlServerDb:
+    container_name: SqlServerContainer
+    image: mcr.microsoft.com/mssql/server:2017-latest
     ports:
-      - "5001:80"  # Map host port 5000 to container port 80
-  frontend:
-    build:
-      context: ./TD.Web/TD.Web.React
-      dockerfile: ./Dockerfile  # Specify the path to the frontend Dockerfile
+        - 8002:1433
+    environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_SA_PASSWORD=myStong_Password123# 
+  td.web:
+    image: ${DOCKER_REGISTRY-}tdweb
     ports:
-      - "3000:80"  # Map host port 8080 to container port 80
+         - 8001:80
+    build:
+      context: .
+      dockerfile: TD.Web/Dockerfile
+    depends_on: 
+      - SqlServerDb
+  td.frontend:
+    image: ${DOCKER_REGISTRY-}tdfrontend
+    ports:
+      - 5001:5001
+    build: 
+       context: ./TD.Web/TD.Web.React
+       dockerfile: Dockerfile
+    
 
-  
