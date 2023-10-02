@@ -36,6 +36,9 @@ You can access this application via the following URLs.
   - Swagger Documentation: [https://todoapi-vp.azurewebsites.net/swagger/index.html](https://todoapi-vp.azurewebsites.net/swagger/index.html)
 ## Architecture
 The To-Do Task Application boasts a robust and scalable architecture that ensures optimal performance and maintainability. Let's delve into the key architectural components:
+
+![To Do Application Diagrams-Application Overview](https://github.com/nabeel-hussain/To-Do-App/assets/20205438/f39bba93-9237-4001-859b-c104f54a560f)
+
 ### Frontend (ReactJS - nginx server)
 
 The frontend is built using **ReactJS with Typescript from  [vite](https://vitejs.dev/guide/)**. To serve these frontend assets efficiently, an **nginx** server has been utilized on production, which acts as a reverse proxy, handling requests and delivering a seamless user experience. This setup guarantees fast load times and responsiveness.
