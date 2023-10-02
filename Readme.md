@@ -1,4 +1,31 @@
 # To-Do Task Application
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Demo](#demo)
+3. [Architecture](#architecture)
+    - [Frontend (ReactJS - nginx server)](#frontend-reactjs---nginx-server)
+    - [Backend (.NET Core 7)](#backend-net-core-7)
+    - [Database (Azure SQL Database)](#database-azure-sql-database)
+    - [REST APIs Communicate Between Frontend and Backend Application](#rest-apis-communicate-between-frontend-and-backend-application)
+    - [API Key-Based Authentication](#api-key-based-authentication)
+    - [Docker Containers](#docker-containers)
+4. [Tools and Technologies](#tools-and-technologies)
+    - [Application and Data](#application-and-data)
+    - [DevOps](#devops)
+5. [Features](#features)
+6. [Project Setup and Run Guide](#project-setup-and-run-guide)
+    - [With Docker](#with-docker)
+    - [Without Docker](#without-docker)
+7. [API Endpoints](#api-endpoints)
+8. [Deployment Procedure](#deployment-procedure)
+    - [Frontend Application Deployment](#frontend-application-deployment)
+    - [Backend Application Deployment](#backend-application-deployment)
+9. [Future Improvements](#future-improvements)
+10. [Contributions](#contributions)
+    - [How to Contribute](#how-to-contribute)
+    - [Reporting Issues](#reporting-issues)
+11. [Contact](#contact)
 
 ## Introduction
 This project is a To-Do Task Application built using .NET Core 7, React JS with TypeScript, and MSSQL Server as the database. It allows users to manage their tasks efficiently. Users can easily create tasks, edit tasks, set due date for each task and filter the tasks based on the criteria they like. In this README, a step-by-step guide has created on how to set up and use the To-Do Task Application. Whether you're running it locally for personal use or deploying it in a production environment for a team
@@ -9,6 +36,9 @@ You can access this application via the following URLs.
   - Swagger Documentation: [https://todoapi-vp.azurewebsites.net/swagger/index.html](https://todoapi-vp.azurewebsites.net/swagger/index.html)
 ## Architecture
 The To-Do Task Application boasts a robust and scalable architecture that ensures optimal performance and maintainability. Let's delve into the key architectural components:
+
+![To Do Application Diagrams-Application Overview](https://github.com/nabeel-hussain/To-Do-App/assets/20205438/f39bba93-9237-4001-859b-c104f54a560f)
+
 ### Frontend (ReactJS - nginx server)
 
 The frontend is built using **ReactJS with Typescript from  [vite](https://vitejs.dev/guide/)**. To serve these frontend assets efficiently, an **nginx** server has been utilized on production, which acts as a reverse proxy, handling requests and delivering a seamless user experience. This setup guarantees fast load times and responsiveness.
