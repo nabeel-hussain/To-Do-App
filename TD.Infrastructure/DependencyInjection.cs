@@ -18,7 +18,7 @@ public static class DependencyInjection
         services.AddDbContext<ToDoDbContext>(dbContextOptionBuilder =>
         {
             var connectingString = configuration.GetConnectionString("DefaultConnection");
-            dbContextOptionBuilder.UseSqlServer(connectingString);
+            dbContextOptionBuilder.UseNpgsql(connectingString);
         });
         return services;
     }
