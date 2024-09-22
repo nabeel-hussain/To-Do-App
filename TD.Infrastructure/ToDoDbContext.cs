@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Security.Principal;
 using TD.Domain.Entities;
 using TD.Domain.Primitives;
@@ -33,5 +34,22 @@ public sealed class ToDoDbContext : DbContext
             }
         }
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<DateTimeOffset>()
+            .HaveConversion<DateTimeOffsetConverter>();
+    }
+
+    public class DateTimeOffsetConverter : ValueConverter<DateTimeOffset, DateTimeOffset>
+    {
+        public DateTimeOffsetConverter()
+            : base(
+                d => d.ToUniversalTime(),
+                d => d.ToUniversalTime())
+        {
+        }
     }
 }

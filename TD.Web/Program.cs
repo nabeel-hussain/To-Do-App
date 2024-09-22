@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using TD.Application;
 using TD.Infrastructure;
@@ -49,17 +50,12 @@ builder.Services.AddAuthentication(ApiKeyAuthenticationOptions.DefaultScheme)
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    // Enable CORS (Cross-Origin Resource Sharing) for development environment.
-    // Production CORS is managed through Azure App Service CORS
-    app.UseCors(builder =>
+app.UseCors(builder =>
             builder
             .WithOrigins("*")
             .AllowAnyMethod()
             .AllowAnyHeader());
-}
+
 // Enable Swagger UI for API documentation.
 app.UseSwagger();
 app.UseSwaggerUI();
