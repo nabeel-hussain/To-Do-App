@@ -307,7 +307,7 @@ If you encounter any issues or have suggestions for improvements, please open an
 Thank you for contributing to our project!
 
 ## Contact
-If you have any questions or need assistance related to this project, feel free to reach out at [nabeel.hussain1602@gmail.com](mailto:nabeel.hussain1602@gmail.com). I am here to help and would be happy to assist you with any queries.
+If you have any questions or need assistance related to this project, feel free to reach out at [luxkyshan@gmail.com](mailto:luxkyshan@gmail.com). I am here to help and would be happy to assist you with any queries.
  
 
 
