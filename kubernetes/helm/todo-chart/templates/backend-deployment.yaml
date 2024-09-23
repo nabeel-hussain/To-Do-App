@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: todo-frontend
+  name: todo-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo-frontend
+      app: todo-app
   template:
     metadata:
       labels:
-        app: todo-frontend
+        app: todo-app
     spec:
       containers:
-      - name: todo-frontend
-        image: todoappfrontend:latest
+      - name: todo-app
+        image: todoapp:latest
         imagePullPolicy: Never
         resources:
           limits:

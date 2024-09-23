@@ -1,0 +1,9 @@
+apiVersion: v2
+name: todo-chart
+description: A helm chart to deploy the todo app in kubernetes. It has three components i-e frontend, backend and database (postgres)
+
+type: application
+
+version: 0.1.0
+
+appVersion: "1.0.0"
